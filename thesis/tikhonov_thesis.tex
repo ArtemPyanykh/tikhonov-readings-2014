@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{geometry}
+\geometry{a4paper}
+
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% For the First Player
+% First step
+\newcommand{\fpfs}[1]{\ensuremath{\sigma^{#1}_1}}
+% First step for state
+\newcommand{\fpfss}[1]{\ensuremath{\sigma^{#1}_1}}
+% First step for state and action
+\newcommand{\fpfssa}[2]{\ensuremath{\sigma^{#1}_{1,#2}}}
+% Partitioning of p = [0,1]
+\newcommand{\peven}[1]{\ensuremath{p_{#1}^{+0}}}
+\newcommand{\podd}[1]{\ensuremath{p_{#1}^{+1/2}}}
+
+% First player p_k^even first step
+\newcommand{\fpefs}[1]{\ensuremath{\phi_{#1}^{+0}}}
+% First player p_k^odd first step
+\newcommand{\fpofs}[1]{\ensuremath{\phi_{#1}^{+1/2}}}
+
+% First player lottery for p in [p_k^even, p_k^odd]
+\newcommand{\fpels}[1]{\ensuremath{\lambda_{#1}^{+0}}}
+% First player lottery for p in [p_k^odd, p_k+1^even]
+\newcommand{\fpols}[1]{\ensuremath{\lambda_{#1}^{+1/2}}}
+
+% Capital Tau
+\newcommand{\Tau}{\ensuremath{\mathrm{T}}}
+
+% Equal by definition
+\newcommand\eqdef{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily def}}}{=}}}
+
+\newcommand\R{\mathbb{R}}
+
+\renewcommand\leq{\leqslant}
+\renewcommand\geq{\geqslant}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}%
+\textbf{\large\uppercase{об одной модификации модели биржевых торгов с инсайдером}}
+
+Пьяных А.И.
+
+\textit{Факультет ВМК, МГУ имени М.В. Ломоносова}
+\end{center}
+
+Исследуется модификация дискретной многошаговой модели биржевых торгов, рассмотренной в [\ref{lit:domansky}]. Торги происходят между двумя игроками за однотипные акции. Случайная цена акции может принимать два значения: $ m $ с вероятностью $ p $ и $ 0 $ с вероятностью $ (1-p) $, и определяется в начале торгов. Настоящая цена акции известна Игроку 1. Игрок 2 знает вероятность высокой цены акции и то, что Игрок 1 --- инсайдер. На каждом шаге торгов игроки делают целочисленные ставки. Игрок, предложивший большую ставку, покупает у второго акцию. 
+
+В работах [\ref{lit:domansky},\ref{lit:kreps},\ref{lit:sandomirskaya}] сделка осуществляется по наибольшей цене. В работе [\ref{lit:domansky}] получено решение игры бесконечной продолжительности, в работе [\ref{lit:sandomirskaya}] получено решение одношаговой игры, а в работе [\ref{lit:kreps}] --- игры конечной продолжительности при $ m \leqslant 3 $ .
+
+В данной работе цена сделки определяется как полусумма предложенных ставок. 
+Модель сводится к повторяющейся игре с асимметричной информацией (см. [\ref{lit:aumann}]). Получено решение игры бесконечной продолжительности при произвольных значениях $ m $~и~$ p $ --- найдены оптимальные стратегии игроков и значение игры 
+$ 
+  V_\infty^m(p) = \min_{i \in \{0, 1, \ldots, m\}} \left(p (m-i)^2 + (1-p)i^2\right).
+$
+
+\vskip 1em
+\textbf{Литература}
+
+\begin{enumerate}
+
+\item\label{lit:aumann}
+Aumann R.J., Maschler M. B. \textit{Repeated Games with Incomplete Information}. The MIT Press, Cambridge, London
+
+\item\label{lit:domansky}
+Domansky V. \textit{Repeated games with asymmetric information and random price fluctuations at finance markets} // International Journal of Game Theory. 2007. V. 36(2). P. 241--257
+
+\item\label{lit:kreps}
+Крепс В.Л. \textit{Повторяющиеся игры, моделирующие биржевые торги, и возвратные последовательности} // Изв. РАН. Теория и системы управления. 2009. Вып. 4. С. 109-120
+
+\item\label{lit:sandomirskaya}
+Сандомирская М.С., Доманский В.К. \textit{Решение одношаговой игры биржевых торгов с неполной информацией} // Математическая теория игр и её приложения. 2012. Т. 4. Вып. 1. С. 32-54
+
+\end{enumerate}
+\end{document}

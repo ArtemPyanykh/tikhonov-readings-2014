@@ -1,0 +1,407 @@
+\documentclass{beamer}
+
+\mode<presentation>
+\title[Модель торгов с инсайдером]%
+{Об одной модификации модели биржевых торгов с инсайдером}
+\author{Пьяных А.И. \\ \texttt{artem.pyanykh@gmail.com}}
+\date{Тихоновские чтения. 2014}
+\institute{Московский Государственный Университет \\ Факультет вычислительной математики и кибернетики}
+
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{План}
+  \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Введение}
+
+\begin{frame}
+  \frametitle{Краткое описание}
+  
+  \begin{itemize}
+    \item
+    Торги происходят между двумя игроками за однотипные акции.
+    
+    \item
+    Цена акции может быть либо $0$, либо $m$.
+    
+    \item
+    Игрок 1 (инсайдер) знает настоящую цену акции. Игрок 2 знает вероятности высокой и низкой цены ($p$ и $(1-p)$).
+    
+    \item
+    На каждом шаге торгов игроки делают ставки. Наибольшая ставка побеждает, и один игрок покупает у другого акцию.
+    
+    \item
+    Цена сделки равна наибольшей предложенной ставке.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Обзор существующих результатов}
+
+\begin{frame}
+  \frametitle{Обзор существующих результатов}
+  
+  \begin{itemize}
+    \item
+    \cite[De Meyer, Saley, 2002]{DeMeyer2002}. Ставки принимают вещественные значения. Получено решение $n$-шаговой игры.
+    
+    \item
+    \cite[Domansky, 2007]{Domansky2007}. Ставки принимают дискретные значения. Получено решение игры неограниченной продолжительности.
+    
+    \item
+    \cite[Крепс, 2009]{Kreps2009}. Ставки принимают дискретные значения. Получено решение $n$-шаговой игры при $m \leqslant 3$.
+    
+    \item
+    \cite[Сандомирская, 2012]{Sandomirskaya2012}. Ставки принимают дискретные значения. Получено решение одношаговой игры.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Постановка задачи}
+
+\begin{frame}
+  \frametitle{Постановка задачи}
+  
+  \begin{itemize}
+    \item
+    В упомянутых работах цена сделки равна наибольшей предложенной ставке. Можно задать по-другому.
+
+    \item
+    В работе \cite[Chatterjee, Samuelson, 1983]{Chatterjee1983} рассмотрена модель двустороннего аукциона с ценой сделки равной
+  \[
+    p = \beta b + (1 - \beta) s, \: 0 \leqslant \beta \leqslant 1,
+  \]
+  где $b$ и $s$ -- цены, назначенные покупателем и продавцом, соответственно. 
+  
+    \item
+    В работе \cite[Myerson, Satterthwaite, 1983]{Myerson1983} показано, что модель с $\beta = 1/2$ -- оптимальна.
+
+    \item  
+    В данной работе рассматрена модель торгов с ценой сделки равной полусумме предложенных ставок.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Модель}
+
+\begin{frame}
+  \frametitle{Повторяющаяся игра}
+  Формально модель сводится к $n$-шаговой повторяющейся игре с неполной информацией. Назовем ее $G_n^m(p)$.
+  
+  Множество состояний рынка $S = \{H, L\}$. Конкретное состояние $s \in S$ выбирается ходом случая на первом шаге.
+  
+  Платежные матрицы задаются следующим образом:
+  \[
+  A^L(i, j) = 2 \cdot \begin{cases}
+   (i+j)/2, \, i < j, \\
+   0, \, i = j, \\
+   -(i+j)/2, \, i > j,
+ \end{cases}
+ A^H(i, j) = 2 \cdot \begin{cases}
+ (i+j)/2 - m, \, i < j, \\
+ 0, \, i = j, \\
+ m - (i + j)/2, \, i > j.
+ \end{cases}
+  \]
+  
+  На $t$-ом шаге первый игрок выбирает $i_t \in I = \{0,1,\ldots,m\}$, второй --- $j_t \in J = \{0,1,\ldots,m\}$.
+  
+  Выигрыш первого игрока в игре равен $\sum_{t=1}^n a_{i_t j_t}^s$.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Определение стратегии}
+  Стратегии игроков задаются следующим образом:
+  \begin{itemize}
+    \item
+    для инсайдера $\sigma = (\sigma_1, \sigma_2, \ldots, \sigma_t, \ldots)$, где 
+    $\sigma_t: S \times I^{t-1} \rightarrow \Delta(I) $, 
+    $\Delta(I)$ --- множество вероятностных распределений на $I$. Множество всех стратегии обозначим $\Sigma$\footnote{рассматриваем только стратегии, дающие неотрицательный выигрыш на каждом шаге}.
+    
+    \item
+    для неосведомленного игрока $\tau = (\tau_1, \tau_2, \ldots, \tau_t, \ldots)$, где
+    $\tau_t: I^{t-1} \rightarrow \Delta(J)$,
+    $\Delta(J)$ --- множество вероятностных распределений на $J$. Множество всех стратегий обозначим $\mathbb{T}$.
+  \end{itemize}
+  
+  Тогда выигрыш первого игрока равен
+  \[
+  K_n^m(p, \sigma, \tau) = \sum_{t=1}^n(pA^H(\sigma_t^H, \tau_t) + (1-p)A^L(\sigma^L_t, \tau_t)),
+  \]
+  где $A^s(\sigma^s_t, \tau_t) = \mathbb{E}_{\sigma^s_t,\tau_t} A^s(i_t, j_t)$.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Оптимальная стратегия неосведомленного игрока}
+
+\begin{frame}
+  \frametitle{Стратегия неосведомленного игрока}
+  
+  \only<1>{
+    Определим чистую стратегию $\tau^k, \, k \in J$%
+    \footnote{определяется аналогично \cite[Domansky, 2007]{Domansky2007}}:
+    \begin{gather*}
+      \tau_1^k = k,\\
+      \tau_t^k(i_{t-1},j_{t-1})=\begin{cases}
+        j_{t-1} - 1, &\, i_{t-1} < j_{t-1}, \\
+        j_{t-1},     &\, i_{t-1} = j_{t-1}, \\
+        j_{t_1} + 1, &\, i_{t-1} > j_{t+1}
+      \end{cases}
+    \end{gather*}
+    
+      Определим $\tau^*$ следующим образом: при 
+      $p \in \left(\frac{k-1/2}{m},\frac{k+1/2}{m}\right]$ применять $\tau^k$.
+      
+      Справедливо следующее неравенство:
+      \[
+        max_{\sigma \in \Sigma} K_\infty^m(p, \sigma, \tau^*) \leqslant min_{j \in J} (p(m-j)^2 + (1-p)j^2) = H^m(p).
+      \]
+    }
+    
+    \only<2>{
+    $H^m(p)$ --- кусочно-линейная функция; определяется значениями в точках:
+    \begin{gather*}
+      H^m\left((k+1/2)/m\right) = m/2 + mk - k^2 -k, \, k=\overline{0,m-1}\\
+      H^m(0) = H^m(1) = 0.
+    \end{gather*}
+
+    \begin{center}
+      \includegraphics[height=5cm]{value_combination.eps}
+    \end{center}
+    }
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Оптимальная стратегия инсайдера}
+
+\begin{frame}
+  \frametitle{Стратегия инсайдера}
+  \only<1>{
+    Разобъем отрезок $[0,1]$ точками из 
+    {\small
+    \[
+      P = \left\{ p_i^{+0} = \frac{i}{m}, \: p_j^{+1/2} = \frac{j+1/2}{m}:\: i \in \overline{0,m}, \: j \in \overline{0,m-1} \right\}.
+    \]
+    }
+  }
+  
+  \only<1>{
+    При $p \in \{k/m, (k+1/2)/m\}$ инсайдер использует ставки $k$ и $k+1$, причем:
+    \begin{itemize}
+      \item
+      полные вероятности использования ставок $k$ и $k+1$ равны $1/2$;
+      
+      \item
+      апостериорные вероятности равны $p(H|k) = p - 1/(2m)$ и $p(H|k+1) = p + 1/(2m)$.
+    \end{itemize}
+  }
+  
+  \only<2>{
+    Получим рекуррентную формулу для нижней оценки выигрыша инсайдера
+    {\footnotesize
+    \begin{gather*}
+      L_\infty^m
+        \left( \frac{k+1/2}{m} \right) = 
+          \frac{1}{2} + 
+            \frac{1}{2} \left(
+              L_\infty^m \left( \frac{k}{m} \right) 
+              + 
+              L_\infty^m\left( \frac{k+1}{m} \right)
+            \right), \: k = \overline{0,m-1}\\
+      L_\infty^m
+        \left( \frac{k}{m} \right) = 
+          \frac{1}{2} \left(
+            L_\infty \left( \frac{k-1/2}{m} \right) 
+            + 
+            L_\infty^m \left( \frac{k+1/2}{m} \right)
+          \right), \: k = \overline{1,m-1}
+    \end{gather*}
+    }
+  }
+  
+  \only<2>{
+    Решение этой системы:
+    {\footnotesize
+    \begin{gather*}
+      L_\infty^m \left( \frac{k+1/2}{m} \right) = m/2 + mk - k^2 - k, k = \overline{0,m-1},\\
+      L_\infty^m \left( \frac{k}{m} \right) = mk - k^2, k = \overline{0,m}.
+    \end{gather*}
+    }
+    
+    В точках $p = (k+1/2)/m$ совпадает с $H^m(p)$.
+  }
+  
+  \only<3>{
+    Нужно доопределить стратегию инсайдера в точках $p \in [0,1] \setminus P$. 
+    
+    Пусть $p \in (k/m, (k+1/2)/m)$%
+    \footnote{Для $p \in ((k+1/2)/m, (k+1)/m)$ --- аналогично}. 
+    Тогда инсайдер использует ставки $k$ и $k+1$, причем полные вероятности ставок и апостериорные вероятности равны:
+    \begin{gather*}
+      q_k = 2(k-mp)+1, \: 
+      q_{k+1} = 1 - q_k, \\  
+      p(H|k) = k/m, \:
+      p(H|k+1) = (k+1/2)/m.
+    \end{gather*}
+    
+    \begin{center}
+    \begin{tikzpicture}
+      [scale=.8,
+       dot/.style={circle,fill=black,scale=0.3}]
+      \node (left) at (0,0) [dot] {};
+      \node (right) at (4,0) [dot] {};
+      \node (p) at (1.5,0) [dot] {};
+      
+      \node [left] at (left.west) {$\frac{k}{m}$};
+      \node [right] at (right.east) {$\frac{k+1/2}{m}$};
+      \node [below] at (p.south) {$p$};
+      
+      \draw (left) to node [above] {$q_k$} (p)
+            (p) to node [above] {$q_{k+1}$} (right);
+    \end{tikzpicture}
+    \end{center}
+    
+    Такое действие гарантирует инсайдеру выигрыш $L_\infty^m(p)$, линейно зависящий от $p$ на рассматриваемом интервале.
+  }
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Решение игры}
+
+\begin{frame}
+  \frametitle{Решение игры}
+  
+  Т.к. $H^m(p)$ и $L_\infty^m(p)$ совпадают, то значение игры $G_\infty^m(p)$ существует, равно $H^m(p)$, а определенные ранее стратегии игроков являются оптимальными.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Выводы}
+
+\begin{frame}
+  \frametitle{Обобщение на случай произвольного $\beta$}
+  \only<1>{
+  \begin{itemize}
+    \item
+    В общем случае определим $G_n^m(\beta, p), \, n \leqslant \infty$ с платежными матрицами
+    \begin{equation*}\small
+    A^L(i, j) = \begin{cases}
+      \alpha i + \beta j, &\, i < j, \\
+      0, &\, i = j, \\
+      -\beta i - \alpha j, &\, i > j,
+    \end{cases}
+    \,
+    A^H(i, j) = \begin{cases}
+      \alpha i + \beta j - m, &\, i < j, \\
+      0, &\, i = j, \\
+      m - \beta i - \alpha j, &\, i > j,
+    \end{cases}
+    \end{equation*}
+    где $\beta \leqslant 0, \alpha = 1 - \beta$.
+    
+    \item
+    Через $V_n^m(\beta, p)$ обозначим значение игры (если существует).
+  \end{itemize}
+  }
+  
+  \only<2>{
+    Стратегия $\tau^*$ неосведомленного игрока довольно просто обобщается на случай произвольного $\beta$. 
+    При этом справедливо неравенство
+    {\small
+    \[
+      \max_{\sigma \in \Sigma} K_\infty^m(\beta, p, \sigma, \tau^*) \leqslant
+      \min_{j \in J} \frac{1}{2} (p(m-j)(m-j+1-2\beta) + (1-p)j(j+1-2\alpha)).
+    \]
+    }
+    
+    К сожалению, так же просто обобщить стратегию инсайдера не удается.
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Сравнение с результатами \cite[Domansky, 2007]{Domansky2007}}
+  Модели, рассмотренной в \cite[Domansky, 2007]{Domansky2007}, соответствует значение $\beta = 1$. 
+  В данной работе $\beta=1/2$.
+  
+  Справедливо утверждение, что при любом значении $m \geqslant 3$ и $p \in [0,1]$
+  \[
+    V_\infty^m(1/2, p) \geqslant V_\infty^m(1,p),
+  \]
+  причем равенство достигается только при $p = k/m, \: k = \overline{0,m}$.
+  
+  \begin{center}
+    \includegraphics[height=5cm]{value_comparison.eps}
+  \end{center}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \begin{center}
+    \LargeСпасибо за внимание!
+  \end{center}
+\end{frame}
+
+\begin{thebibliography}{10}
+\footnotesize
+\bibitem{DeMeyer2002}[De Meyer, 2002]
+  De Meyer B., Saley H.
+  \newblock On the strategic origin of Brownian motion in finance.
+  \newblock \emph{Int J Game Theory}, 2002.
+\bibitem{Domansky2007}[Domansky, 2007]
+  Domansky V.
+  \newblock Repeated games with asymmetric information and random price fluctuations at finance markets.
+  \newblock \emph{Int J Game Theory}, 2007.
+\bibitem{Kreps2009}[Крепс, 2009]
+  Крепс В.Л.
+  \newblock Повторяющиеся игры, моделирующие биржевые торги, и возвратные последовательности.
+  \newblock \emph{Изв. РАН. Теория и системы управления}, 2009.
+\bibitem{Sandomirskaya2012}[Сандомирская, 2012]
+  Сандомирская М.С., Доманский В.К.
+  \newblock Решение одношаговой игры биржевых торгов с неполной информацией.
+  \newblock \emph{Математическая теория игр и её приложения}, 2012.
+\bibitem{Chatterjee1983}[Chatterjee, 1983]
+  Chatterjee K., Samuelson W.
+  \newblock Bargaining under Incomplete Information
+  \newblock \emph{Operations Research}, 1983.
+\bibitem{Myerson1983}[Myerson, 1983]
+  Myerson R., Satterthwaite M.
+  \newblock Efficient Mechanisms for Bilateral Trading
+  \newblock \emph{Journal of Economic Theory}, 1983.
+\end{thebibliography}
+
+
+
+\end{document}
